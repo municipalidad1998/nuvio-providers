@@ -122,7 +122,7 @@ function resolveEpisodeUrl(detailUrl, episodeNum) {
       const re = /href="([^"]+)"/g;
       let m;
       while ((m = re.exec(html)) !== null) {
-        let href = decodeEntities(m[1]);
+        const href = decodeEntities(m[1]);
         if (href.indexOf(BASE_URL) !== 0) continue;
         const tail = href.replace(/\/+$/, '').split('/').pop();
         if (new RegExp('(^|[^0-9])0*' + episodeNum + '([^0-9]|$)').test(tail)) return href;
