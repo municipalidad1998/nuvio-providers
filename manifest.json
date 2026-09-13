@@ -1,0 +1,431 @@
+{
+  "name": "Yoru's Repo",
+  "version": "1.0.0",
+  "scrapers": [
+    {
+      "id": "latanime",
+      "name": "LatAnime",
+      "description": "Anime en latino con sub y dub desde LatAnime",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/latanime.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=latanime.org&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "jkanime",
+      "name": "JKAnime",
+      "description": "Anime subtitulado y doblado desde JKAnime",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/jkanime.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=jkanime.net&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "animejara",
+      "name": "AnimeJara",
+      "description": "Anime en espanol desde AnimeJara",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animejara.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animejara.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "tioanime",
+      "name": "TioAnime",
+      "description": "Anime subtitulado y doblado desde TioAnime",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/tioanime.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=tioanime.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "veranimes",
+      "name": "VeraAnimes",
+      "description": "Anime en espanol desde VeraAnimes",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/veranimes.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=wwv.veranimes.net&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "animeav1",
+      "name": "AnimeAV1",
+      "description": "Anime en alta calidad desde AnimeAV1 (SPA, puede requerir ajustes)",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animeav1.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animeav1.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "mundodonghua",
+      "name": "MundoDonghua",
+      "description": "Donghuas subtituladas y dobladas desde MundoDonghua",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/mundodonghua.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=www.mundodonghua.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "estrenosanime",
+      "name": "EstrenosAnime",
+      "description": "Animes de estreno subtitulados desde EstrenosAnime",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/estrenosanime.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=estrenosanime.net&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "lamovie",
+      "name": "LaMovie",
+      "description": "Peliculas y series desde LaMovie",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/lamovie.js",
+      "enabled": false,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=lamovie.org&sz=128",
+      "contentLanguage": [
+        "es"
+      ],
+      "notes": "SPA sobre WordPress: el HTML no incluye resultados. Se activara cuando su API sea accesible."
+    },
+    {
+      "id": "hackstore",
+      "name": "HackStore",
+      "description": "Peliculas y series en latino desde HackStore",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/hackstore.js",
+      "enabled": false,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=hackstore2.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ],
+      "notes": "SPA de WordPress con backend propio; el HTML no incluye contenido. Requiere integrar su API interna."
+    },
+    {
+      "id": "aether",
+      "name": "Aether",
+      "description": "Peliculas y series desde Aether",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/aether.js",
+      "enabled": false,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=aether.ist&sz=128",
+      "contentLanguage": [
+        "es"
+      ],
+      "notes": "SPA: el HTML no incluye resultados. Requiere integrar su API interna."
+    },
+    {
+      "id": "pelispedia-mov",
+      "name": "PelisPedia",
+      "description": "Peliculas y series desde PelisPedia (pelispedia.mov)",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pelispedia-mov.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=pelispedia.mov&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "streamxhd",
+      "name": "StreamXHD",
+      "description": "Peliculas y series HD desde StreamXHD",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/streamxhd.js",
+      "enabled": false,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=streamxhd.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ],
+      "notes": "Sitio renderizado por JavaScript sin HTML scrapeable ni WP REST. Requiere integrar su API."
+    },
+    {
+      "id": "detodopeliculas",
+      "name": "DeTodoPeliculas",
+      "description": "Peliculas de todos los generos desde DeTodoPeliculas",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/detodopeliculas.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=detodopeliculas.nu&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "gambeta",
+      "name": "Gambeta",
+      "description": "Peliculas y series desde Gambeta",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/gambeta.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=gambeta.vip&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "pelispedia-is",
+      "name": "PelisPedia IS",
+      "description": "Peliculas y series desde PelisPedia (pelispedia.is)",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pelispedia-is.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=pelispedia.is&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "entrepeliculasyseries",
+      "name": "EntrePeliculasySeries",
+      "description": "Peliculas y series desde EntrePeliculasySeries",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/entrepeliculasyseries.js",
+      "enabled": false,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=entrepeliculasyseries.nz&sz=128",
+      "contentLanguage": [
+        "es"
+      ],
+      "notes": "Protegido por Cloudflare (403 para clientes sin navegador). Requiere un resolver con bypass."
+    },
+    {
+      "id": "tlnovelas",
+      "name": "TLNovelas",
+      "description": "Telenovelas desde TLNovelas",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/tlnovelas.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=ww2.tlnovelas.net&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "doramasflix",
+      "name": "DoramasFlix",
+      "description": "Doramas subtitulados desde DoramasFlix",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/doramasflix.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=doramasflix.co&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    },
+    {
+      "id": "doramasyt",
+      "name": "DoramaYT",
+      "description": "Doramas subtitulados desde DoramaYT",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/doramasyt.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=www.doramasyt.com&sz=128",
+      "contentLanguage": [
+        "es"
+      ]
+    }
+  ]
+}
