@@ -1,232 +1,117 @@
-"use strict";
-var __defProp = Object.defineProperty;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __async = (__this, __arguments, generator) => {
-  return new Promise((resolve, reject) => {
-    var fulfilled = (value) => {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
+var TMDB_API_KEY = '68e094699525b18a70bab2f86b1fa706';
+var BASE_URL = 'https://sololatino.net';
+var UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
+
+function log() {
+  var args = ['[SoloLatino]'].concat(Array.prototype.slice.call(arguments));
+  console.log.apply(console, args);
+}
+
+function request(url, opts) {
+  var headers = {
+    'User-Agent': UA,
+    'Accept': opts && opts.json ? 'application/json' : 'text/html,application/xhtml+xml',
+    'Accept-Language': 'es-ES,es;q=0.9,en;q=0.5',
+    'Referer': BASE_URL + '/'
+  };
+  if (opts && opts.body) {
+    headers['Content-Type'] = 'application/json';
+  }
+  return fetch(url, {
+    method: opts && opts.body ? 'POST' : 'GET',
+    headers: headers,
+    body: opts && opts.body ? JSON.stringify(opts.body) : undefined,
+    redirect: 'follow'
+  }).then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
+    if (opts && opts.json) return res.json();
+    return res.text();
+  });
+}
+
+function getStreams(tmdbId, mediaType, season, episode) {
+  log('getStreams tmdb=' + tmdbId + ' type=' + mediaType + ' season=' + season + ' episode=' + episode);
+  var isTv = mediaType === 'tv' || mediaType === 'series';
+  var endpoint = isTv ? 'tv' : 'movie';
+
+  return request('https://api.themoviedb.org/3/' + endpoint + '/' + tmdbId + '?api_key=' + TMDB_API_KEY + '&language=es-ES', { json: true })
+    .then(function(tmdbData) {
+      var title = isTv ? tmdbData.name : tmdbData.title;
+      if (!title) throw new Error('No title from TMDB');
+      log('TMDB: ' + title);
+
+      return request(BASE_URL + '/api/search/suggest?q=' + encodeURIComponent(title), { json: true });
+    })
+    .then(function(searchData) {
+      if (!searchData || !searchData.data || !searchData.data.length) throw new Error('No search results');
+      var best = searchData.data[0];
+      var slug = best.slug || '';
+      var typeSlug = best.type || (isTv ? 'serie' : 'pelicula');
+
+      var detailUrl;
+      if (typeSlug === 'serie') {
+        detailUrl = BASE_URL + '/serie/' + slug;
+        if (isTv && episode && season) {
+          detailUrl += '/temporada-' + season + '/episodio-' + episode;
+        }
+      } else {
+        detailUrl = BASE_URL + '/pelicula/' + slug;
       }
-    };
-    var rejected = (value) => {
-      try {
-        step(generator.throw(value));
-      } catch (e) {
-        reject(e);
-      }
-    };
-    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-    step((generator = generator.apply(__this, __arguments)).next());
-  });
-};
-const TMDB_API_KEY = "68e094699525b18a70bab2f86b1fa706";
-const BASE_URL = "https://sololatino.net";
-const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
-function log(...args) {
-  console.log("[sololatino]", ...args);
-}
-function decodeEntities(value) {
-  return value.replace(/&amp;|&#0?38;|&#x26;/gi, "&").replace(/&quot;|&#0?34;|&#x22;/gi, '"');
-}
-function slugify(value) {
-  return String(value).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-}
-function request(_0) {
-  return __async(this, arguments, function* (url, options = {}) {
-    const response = yield fetch(url, {
-      method: options.method || "GET",
-      headers: __spreadValues({
-        "User-Agent": USER_AGENT,
-        Accept: options.accept || "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
-        "Accept-Language": "es-419,es;q=0.9"
-      }, options.headers || {}),
-      redirect: "follow",
-      body: options.body
-    });
-    if (!response.ok)
-      throw new Error(`HTTP ${response.status} for ${url}`);
-    return response;
-  });
-}
-function tmdbInfo(tmdbId, mediaType) {
-  return __async(this, null, function* () {
-    const endpoint = mediaType === "tv" ? "tv" : "movie";
-    const response = yield request(
-      `https://api.themoviedb.org/3/${endpoint}/${tmdbId}?api_key=${TMDB_API_KEY}&language=es-ES`,
-      { accept: "application/json" }
-    );
-    const data = yield response.json();
-    const title = mediaType === "tv" ? data.name : data.title;
-    if (!title)
-      throw new Error("TMDB title not found");
-    return { title, data };
-  });
-}
-function titleMatch(title, item) {
-  const wanted = slugify(title);
-  const candidate = slugify(item.title || item.url || "");
-  if (candidate === wanted)
-    return 0;
-  if (candidate.includes(wanted) || wanted.includes(candidate))
-    return 1;
-  const tokens = wanted.split("-").filter((x) => x.length > 2);
-  const matched = tokens.filter((x) => candidate.includes(x)).length;
-  return tokens.length && matched === tokens.length ? 2 : 99;
-}
-function normalizeTitle(value) {
-  return slugify(value).replace(/-/g, "");
-}
-function isExactTitleMatch(title, item) {
-  const wanted = normalizeTitle(title);
-  const candidate = normalizeTitle(item.title || "");
-  const urlSlug = normalizeTitle(String(item.url || "").split("/").pop() || "");
-  return candidate === wanted || urlSlug === wanted;
-}
-function searchSite(title, mediaType) {
-  return __async(this, null, function* () {
-    const response = yield request(
-      `${BASE_URL}/api/search/suggest?q=${encodeURIComponent(title)}`,
-      { accept: "application/json" }
-    );
-    const items = yield response.json();
-    const wantedType = mediaType === "tv" ? ["series", "anime"] : ["movie"];
-    const candidates = (Array.isArray(items) ? items : []).filter((item) => item && item.url && wantedType.includes(item.type)).sort((a, b) => {
-      const exactA = isExactTitleMatch(title, a) ? 0 : 1;
-      const exactB = isExactTitleMatch(title, b) ? 0 : 1;
-      return exactA - exactB || titleMatch(title, a) - titleMatch(title, b);
-    });
-    if (!candidates.length || !isExactTitleMatch(title, candidates[0])) {
-      throw new Error("No exact result on SoloLatino search");
-    }
-    log(`Match: ${candidates[0].title} -> ${candidates[0].url}`);
-    return candidates[0].url;
-  });
-}
-function setCookieHeader(existing, response) {
-  let values = [];
-  if (response.headers && response.headers.getSetCookie) {
-    values = response.headers.getSetCookie();
-  } else if (response.headers) {
-    const value = response.headers.get("set-cookie");
-    if (value)
-      values = [value];
-  }
-  const map = {};
-  for (const part of String(existing || "").split(";")) {
-    const pair = part.trim().split("=");
-    if (pair.length > 1)
-      map[pair[0]] = pair.slice(1).join("=");
-  }
-  for (const value of values) {
-    const first = value.split(";")[0];
-    const pair = first.split("=");
-    if (pair.length > 1)
-      map[pair[0]] = pair.slice(1).join("=");
-  }
-  return Object.keys(map).map((key) => `${key}=${map[key]}`).join("; ");
-}
-function cookieValue(cookie, name) {
-  const match = new RegExp(`(?:^|;\\s*)${name}=([^;]+)`).exec(cookie || "");
-  return match ? decodeURIComponent(match[1]) : "";
-}
-function extractServers(html) {
-  const servers = [];
-  const re = /<button[^>]+data-server-btn[^>]+data-player-token=["']([^"']+)["'][^>]*>([\s\S]*?)<\/button>/gi;
-  let match;
-  while ((match = re.exec(html)) !== null) {
-    const label = match[2].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-    servers.push({ token: match[1], label: label || "Servidor" });
-  }
-  if (servers.length > 0)
-    return servers;
-  const fallback = /data-player-token=["']([^"']+)["']/gi;
-  while ((match = fallback.exec(html)) !== null) {
-    servers.push({ token: match[1], label: "Servidor" });
-  }
-  return servers;
-}
-function resolveServers(pageUrl) {
-  return __async(this, null, function* () {
-    let cookies = "";
-    const csrfResponse = yield request(`${BASE_URL}/sanctum/csrf-cookie`);
-    cookies = setCookieHeader(cookies, csrfResponse);
-    const pageResponse = yield request(pageUrl, {
-      headers: { Cookie: cookies, Referer: BASE_URL + "/" }
-    });
-    cookies = setCookieHeader(cookies, pageResponse);
-    const html = yield pageResponse.text();
-    const csrfMatch = /meta name=["']csrf-token["'] content=["']([^"']+)["']/i.exec(html);
-    const csrf = csrfMatch ? csrfMatch[1] : "";
-    const xsrf = cookieValue(cookies, "XSRF-TOKEN");
-    const servers = extractServers(html);
-    const streams = [];
-    for (const server of servers.slice(0, 8)) {
-      try {
-        const response = yield request(`${BASE_URL}/api/player-url`, {
-          method: "POST",
-          headers: {
-            Cookie: cookies,
-            Referer: pageUrl,
-            Origin: BASE_URL,
-            "X-Requested-With": "XMLHttpRequest",
-            "X-XSRF-TOKEN": xsrf,
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({ t: server.token })
+      log('Detail URL: ' + detailUrl);
+
+      return request(detailUrl).then(function(detailHtml) {
+        var tokenMatch = detailHtml.match(/token["']\s*:\s*["']([^"']+)/);
+        var token = tokenMatch ? tokenMatch[1] : null;
+
+        var serverRe = /\[\s*["']([^"']{1,40})["']\s*,\s*["'](https?:\/\/[^"']+)["']/g;
+        var servers = [];
+        var sm;
+        var cleanHtml = detailHtml.replace(/\\\//g, '/');
+        while ((sm = serverRe.exec(cleanHtml)) !== null) {
+          servers.push({ name: sm[1], url: sm[2] });
+        }
+        log('Found ' + servers.length + ' server(s)');
+
+        var promises = servers.map(function(svr) {
+          var postHeaders = {
+            'User-Agent': UA,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Referer': detailUrl
+          };
+          if (token) postHeaders['Authorization'] = 'Bearer ' + token;
+
+          return fetch(BASE_URL + '/api/player-url', {
+            method: 'POST',
+            headers: postHeaders,
+            body: JSON.stringify({ url: svr.url })
+          }).then(function(res) {
+            if (!res.ok) return [];
+            return res.json();
+          }).then(function(playerData) {
+            var streamUrl = (playerData && playerData.url) || (playerData && playerData.data && playerData.data.url);
+            if (!streamUrl) return [];
+            return [{
+              name: 'SoloLatino',
+              title: svr.name,
+              url: streamUrl,
+              quality: 'Auto',
+              headers: { 'Referer': detailUrl, 'User-Agent': UA }
+            }];
+          }).catch(function() { return []; });
         });
-        const data = yield response.json();
-        if (!data || !data.url || !/^https?:\/\//i.test(data.url))
-          continue;
-        const type = data.type === "mp4" ? "direct" : "iframe";
-        streams.push({
-          name: "SoloLatino",
-          title: server.label,
-          url: decodeEntities(data.url),
-          quality: type === "direct" ? "Auto" : "Embed",
-          type,
-          headers: { Referer: pageUrl, "User-Agent": USER_AGENT }
+
+        return Promise.all(promises).then(function(results) {
+          var streams = [];
+          results.forEach(function(r) { r.forEach(function(s) { streams.push(s); }); });
+          return streams;
         });
-      } catch (error) {
-        log(`Server ${server.label} failed: ${error.message}`);
-      }
-    }
-    return streams;
-  });
-}
-function getStreams(tmdbId, mediaType = "movie", seasonNum = null, episodeNum = null) {
-  return __async(this, null, function* () {
-    try {
-      const { title } = yield tmdbInfo(tmdbId, mediaType);
-      const detailUrl = yield searchSite(title, mediaType);
-      let pageUrl = detailUrl;
-      if (mediaType === "tv" && episodeNum) {
-        const slug = detailUrl.replace(/\/+$/, "").split("/").pop();
-        pageUrl = `${BASE_URL}/serie/${slug}/temporada-${seasonNum || 1}/episodio-${episodeNum}`;
-      }
-      const streams = yield resolveServers(pageUrl);
-      log(`Returning ${streams.length} stream(s)`);
-      return streams;
-    } catch (error) {
-      console.error("[sololatino] Error:", error.message);
+      });
+    })
+    .catch(function(err) {
+      log('Error: ' + err.message);
       return [];
-    }
-  });
+    });
 }
-module.exports = { getStreams };
+
+module.exports = { getStreams: getStreams };
