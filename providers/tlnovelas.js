@@ -1,9 +1,9 @@
-var TMDB_API_KEY = '68e094699525b18a70bab2f86b1fa706';
-var BASE_URL = 'https://ww2.tlnovelas.net';
-var UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
+let TMDB_API_KEY = '68e094699525b18a70bab2f86b1fa706';
+let BASE_URL = 'https://ww2.tlnovelas.net';
+let UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
 
 function log() {
-  var args = ['[TLNovelas]'].concat(Array.prototype.slice.call(arguments));
+  let args = ['[TLNovelas]'].concat(Array.prototype.slice.call(arguments));
   console.log.apply(console, args);
 }
 
@@ -33,34 +33,34 @@ function decodeEntities(v) {
 }
 
 function titleTokens(t) {
-  var stop = ['the','a','an','of','and','to','in','la','el','los','las','de','y'];
+  let stop = ['the','a','an','of','and','to','in','la','el','los','las','de','y'];
   return slugify(t).split('-').filter(function(x) { return x.length > 1 && stop.indexOf(x) < 0; });
 }
 
 function matchScore(slug, title) {
-  var c = slugify(slug).replace(/-/g, '');
-  var ct = slugify(title).replace(/-/g, '');
+  let c = slugify(slug).replace(/-/g, '');
+  let ct = slugify(title).replace(/-/g, '');
   if (c === ct) return 0;
   if (c.indexOf(ct) === 0) return 1;
-  var tokens = titleTokens(title);
-  var matched = tokens.filter(function(t) { return slugify(slug).split('-').indexOf(t) >= 0; });
+  let tokens = titleTokens(title);
+  let matched = tokens.filter(function(t) { return slugify(slug).split('-').indexOf(t) >= 0; });
   if (tokens.length > 0 && matched.length === tokens.length) return 2;
   return 99;
 }
 
 function collectLinks(html) {
-  var links = [];
-  var re = /<a[^>]+href="([^"]+)"[^>]*>/g;
-  var m;
+  let links = [];
+  let re = /<a[^>]+href="([^"]+)"[^>]*>/g;
+  let m;
   while ((m = re.exec(html)) !== null) {
-    var href = decodeEntities(m[1]);
+    let href = decodeEntities(m[1]);
     if (href.indexOf('/') === 0) href = BASE_URL + href;
     if (href.indexOf(BASE_URL) !== 0) continue;
-    var path = href.slice(BASE_URL.length).split('?')[0].split('#')[0].replace(/^\/+|\/+$/g, '');
+    let path = href.slice(BASE_URL.length).split('?')[0].split('#')[0].replace(/^\/+|\/+$/g, '');
     if (!path || path.split('/').length > 3) continue;
     if (/\/(category|tag|page|author|genero|generos|tipo|estado|letra|feed|wp-|login|register|contacto|dmca|aviso|pedido|donar)/i.test(path)) continue;
     if (/\.(png|jpe?g|gif|css|js|ico|svg|webp|mp4|m3u8)$/i.test(path)) continue;
-    var slug = path.split('/').pop();
+    let slug = path.split('/').pop();
     if (!slug || slug.indexOf('-') < 0) continue;
     links.push({ href: BASE_URL + '/' + path, slug: slug });
   }
@@ -68,24 +68,24 @@ function collectLinks(html) {
 }
 
 function extractMediaUrls(html) {
-  var urls = [];
-  var seen = {};
-  var re = /["'(](https?:\/\/[^"')\s]+?\.(?:m3u8|mp4)(?:\?[^"')\s]*)?)["')]/g;
-  var m;
+  let urls = [];
+  let seen = {};
+  let re = /["'(](https?:\/\/[^"')\s]+?\.(?:m3u8|mp4)(?:\?[^"')\s]*)?)["')]/g;
+  let m;
   while ((m = re.exec(html)) !== null) {
-    var u = m[1].replace(/\\u002F/gi, '/').replace(/\\\//g, '/');
+    let u = m[1].replace(/\\u002F/gi, '/').replace(/\\\//g, '/');
     if (!seen[u]) { seen[u] = 1; urls.push(u); }
   }
   return urls;
 }
 
 function extractIframeUrls(html) {
-  var urls = [];
-  var seen = {};
-  var re = /<iframe[^>]+src=["']([^"']+)["']/gi;
-  var m;
+  let urls = [];
+  let seen = {};
+  let re = /<iframe[^>]+src=["']([^"']+)["']/gi;
+  let m;
   while ((m = re.exec(html)) !== null) {
-    var src = decodeEntities(m[1]);
+    let src = decodeEntities(m[1]);
     if (src.indexOf('//') === 0) src = 'https:' + src;
     if (/^https?:\/\//.test(src) && !seen[src]) { seen[src] = 1; urls.push(src); }
   }
@@ -93,10 +93,10 @@ function extractIframeUrls(html) {
 }
 
 function searchSite(title) {
-  var url = BASE_URL + '/?s=' + encodeURIComponent(title);
+  let url = BASE_URL + '/?s=' + encodeURIComponent(title);
   log('Searching: ' + url);
   return request(url).then(function(html) {
-    var candidates = collectLinks(html);
+    let candidates = collectLinks(html);
     candidates.sort(function(a, b) { return matchScore(a.slug, title) - matchScore(b.slug, title); });
     if (candidates.length > 0 && matchScore(candidates[0].slug, title) < 99) {
       return candidates[0].href;
@@ -106,10 +106,10 @@ function searchSite(title) {
 }
 
 function extractStreams(pageUrl) {
-  var seen = {};
-  var streams = [];
+  let seen = {};
+  let streams = [];
   return request(pageUrl).then(function(html) {
-    var direct = extractMediaUrls(html);
+    let direct = extractMediaUrls(html);
     direct.forEach(function(u) {
       if (!seen[u]) {
         seen[u] = 1;
@@ -122,9 +122,9 @@ function extractStreams(pageUrl) {
         });
       }
     });
-    var candidates = [];
+    let candidates = [];
     extractIframeUrls(html).forEach(function(u) { candidates.push({ url: u, label: 'Servidor' }); });
-    var promises = candidates.slice(0, 5).map(function(c) {
+    let promises = candidates.slice(0, 5).map(function(c) {
       return request(c.url).then(function(embedHtml) {
         extractMediaUrls(embedHtml).forEach(function(u) {
           if (!seen[u]) {
@@ -138,7 +138,7 @@ function extractStreams(pageUrl) {
             });
           }
         });
-      }).catch(function() {});
+      }).catch(function() { return null; });
     });
     return Promise.all(promises).then(function() { return streams; });
   });
@@ -146,11 +146,11 @@ function extractStreams(pageUrl) {
 
 function getStreams(tmdbId, mediaType, season, episode) {
   log('getStreams tmdb=' + tmdbId + ' type=' + mediaType + ' season=' + season + ' episode=' + episode);
-  var isTv = mediaType === 'tv' || mediaType === 'series';
-  var endpoint = isTv ? 'tv' : 'movie';
+  let isTv = mediaType === 'tv' || mediaType === 'series';
+  let endpoint = isTv ? 'tv' : 'movie';
   return request('https://api.themoviedb.org/3/' + endpoint + '/' + tmdbId + '?api_key=' + TMDB_API_KEY + '&language=es-ES', { json: true })
     .then(function(data) {
-      var title = isTv ? data.name : data.title;
+      let title = isTv ? data.name : data.title;
       if (!title) throw new Error('No title from TMDB');
       log('TMDB: ' + title);
       return searchSite(title);
