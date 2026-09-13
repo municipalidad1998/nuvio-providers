@@ -290,7 +290,7 @@
         "tv"
       ],
       "filename": "providers/detodopeliculas.js",
-      "enabled": true,
+      "enabled": false,
       "formats": [
         "m3u8",
         "mp4"
@@ -298,7 +298,8 @@
       "logo": "https://www.google.com/s2/favicons?domain=detodopeliculas.nu&sz=128",
       "contentLanguage": [
         "es"
-      ]
+      ],
+      "notes": "El sitio responde 403 a clientes sin navegador; se oculta hasta contar con un resolver compatible."
     },
     {
       "id": "gambeta",
