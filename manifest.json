@@ -1,6 +1,6 @@
 {
-  "name": "Yoru's Repo",
-  "version": "1.0.0",
+  "name": "Municipalidad1998 Providers",
+  "version": "1.0.1",
   "scrapers": [
     {
       "id": "latanime",

@@ -89,6 +89,15 @@ function titleMatch(title, item) {
   const matched = tokens.filter((x) => candidate.includes(x)).length;
   return tokens.length && matched === tokens.length ? 2 : 99;
 }
+function normalizeTitle(value) {
+  return slugify(value).replace(/-/g, "");
+}
+function isExactTitleMatch(title, item) {
+  const wanted = normalizeTitle(title);
+  const candidate = normalizeTitle(item.title || "");
+  const urlSlug = normalizeTitle(String(item.url || "").split("/").pop() || "");
+  return candidate === wanted || urlSlug === wanted;
+}
 function searchSite(title, mediaType) {
   return __async(this, null, function* () {
     const response = yield request(
@@ -97,8 +106,12 @@ function searchSite(title, mediaType) {
     );
     const items = yield response.json();
     const wantedType = mediaType === "tv" ? ["series", "anime"] : ["movie"];
-    const candidates = (Array.isArray(items) ? items : []).filter((item) => item && item.url && wantedType.includes(item.type)).sort((a, b) => titleMatch(title, a) - titleMatch(title, b));
-    if (!candidates.length || titleMatch(title, candidates[0]) >= 99) {
+    const candidates = (Array.isArray(items) ? items : []).filter((item) => item && item.url && wantedType.includes(item.type)).sort((a, b) => {
+      const exactA = isExactTitleMatch(title, a) ? 0 : 1;
+      const exactB = isExactTitleMatch(title, b) ? 0 : 1;
+      return exactA - exactB || titleMatch(title, a) - titleMatch(title, b);
+    });
+    if (!candidates.length || !isExactTitleMatch(title, candidates[0])) {
       throw new Error("No exact result on SoloLatino search");
     }
     log(`Match: ${candidates[0].title} -> ${candidates[0].url}`);
@@ -139,6 +152,12 @@ function extractServers(html) {
   while ((match = re.exec(html)) !== null) {
     const label = match[2].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
     servers.push({ token: match[1], label: label || "Servidor" });
+  }
+  if (servers.length > 0)
+    return servers;
+  const fallback = /data-player-token=["']([^"']+)["']/gi;
+  while ((match = fallback.exec(html)) !== null) {
+    servers.push({ token: match[1], label: "Servidor" });
   }
   return servers;
 }
