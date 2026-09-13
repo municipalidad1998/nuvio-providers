@@ -1,6 +1,6 @@
 {
   "name": "Municipalidad1998 Providers",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scrapers": [
     {
       "id": "latanime",
@@ -449,5 +449,6 @@
         "es"
       ]
     }
-  ]
+  ],
+  "updatedAt": "2026-09-13T21:00:00.000Z"
 }
