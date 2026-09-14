@@ -31,7 +31,7 @@
     {
       "id": "animejara",
       "name": "AnimeJara",
-      "description": "Anime en espanol desde AnimeJara",
+      "description": "Anime en español desde AnimeJara",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -57,7 +57,7 @@
     {
       "id": "veranimes",
       "name": "VeraAnimes",
-      "description": "Anime en espanol desde VeraAnimes",
+      "description": "Anime en español desde VeraAnimes",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -109,7 +109,7 @@
     {
       "id": "pelispedia-mov",
       "name": "PelisPedia",
-      "description": "Peliculas y series desde PelisPedia (pelispedia.mov)",
+      "description": "Películas y series desde PelisPedia (pelispedia.mov)",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -122,7 +122,7 @@
     {
       "id": "gambeta",
       "name": "Gambeta",
-      "description": "Peliculas y series desde Gambeta",
+      "description": "Películas y series desde Gambeta",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -135,7 +135,7 @@
     {
       "id": "pelispedia-is",
       "name": "PelisPedia IS",
-      "description": "Peliculas y series desde PelisPedia (pelispedia.is)",
+      "description": "Películas y series desde PelisPedia (pelispedia.is)",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -190,7 +190,7 @@
     {
       "id": "sololatino",
       "name": "SoloLatino",
-      "description": "Peliculas, series y anime en espanol latino desde SoloLatino",
+      "description": "Películas, series y anime en español latino desde SoloLatino",
       "version": "1.0.0",
       "author": "Yoru",
       "supportedTypes": ["movie", "tv"],
@@ -198,6 +198,19 @@
       "enabled": true,
       "formats": ["m3u8", "mp4"],
       "logo": "https://www.google.com/s2/favicons?domain=sololatino.net&sz=128",
+      "contentLanguage": ["es"]
+    },
+    {
+      "id": "flixlatam",
+      "name": "FlixLatam",
+      "description": "Películas, series y anime en español latino desde FlixLatam",
+      "version": "1.0.0",
+      "author": "Yoru",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/flixlatam.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "logo": "https://www.google.com/s2/favicons?domain=flixlatam.com&sz=128",
       "contentLanguage": ["es"]
     }
   ],
